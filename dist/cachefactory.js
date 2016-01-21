@@ -65,7 +65,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 	var BinaryHeap = __webpack_require__(1);
 	var _Promise = null;
@@ -198,7 +198,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var _this2 = this;
 
 	      if (Array.isArray(key)) {
-	        var _ret = (function () {
+	        var _ret = function () {
 	          var keys = key;
 	          var values = [];
 
@@ -212,7 +212,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return {
 	            v: values
 	          };
-	        })();
+	        }();
 
 	        if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
 	      } else {
@@ -705,6 +705,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.$$disabled = defaults.disabled;
 	      }
 
+	      if ('deleteOnExpire' in cacheOptions) {
+	        this.setDeleteOnExpire(cacheOptions.deleteOnExpire, false);
+	      } else if (strict) {
+	        this.setDeleteOnExpire(defaults.deleteOnExpire, false);
+	      }
+
+	      if ('recycleFreq' in cacheOptions) {
+	        this.setRecycleFreq(cacheOptions.recycleFreq);
+	      } else if (strict) {
+	        this.setRecycleFreq(defaults.recycleFreq);
+	      }
+
+	      if ('maxAge' in cacheOptions) {
+	        this.setMaxAge(cacheOptions.maxAge);
+	      } else if (strict) {
+	        this.setMaxAge(defaults.maxAge);
+	      }
+
 	      if ('storageMode' in cacheOptions || 'storageImpl' in cacheOptions) {
 	        this.setStorageMode(cacheOptions.storageMode || defaults.storageMode, cacheOptions.storageImpl || defaults.storageImpl);
 	      } else if (strict) {
@@ -727,24 +745,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.setCapacity(cacheOptions.capacity);
 	      } else if (strict) {
 	        this.setCapacity(defaults.capacity);
-	      }
-
-	      if ('deleteOnExpire' in cacheOptions) {
-	        this.setDeleteOnExpire(cacheOptions.deleteOnExpire, false);
-	      } else if (strict) {
-	        this.setDeleteOnExpire(defaults.deleteOnExpire, false);
-	      }
-
-	      if ('maxAge' in cacheOptions) {
-	        this.setMaxAge(cacheOptions.maxAge);
-	      } else if (strict) {
-	        this.setMaxAge(defaults.maxAge);
-	      }
-
-	      if ('recycleFreq' in cacheOptions) {
-	        this.setRecycleFreq(cacheOptions.recycleFreq);
-	      } else if (strict) {
-	        this.setRecycleFreq(defaults.recycleFreq);
 	      }
 
 	      if ('cacheFlushInterval' in cacheOptions) {
@@ -819,14 +819,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        } else if (!('removeItem' in storageImpl) || typeof storageImpl.removeItem !== 'function') {
 	          throw new Error('storageImpl must implement "removeItem(key)"!');
 	        }
-	        $$storage = function () {
+	        $$storage = function $$storage() {
 	          return storageImpl;
 	        };
 	      } else if (this.$$storageMode === 'localStorage') {
 	        try {
 	          localStorage.setItem('cachefactory', 'cachefactory');
 	          localStorage.removeItem('cachefactory');
-	          $$storage = function () {
+	          $$storage = function $$storage() {
 	            return localStorage;
 	          };
 	        } catch (e) {
@@ -837,7 +837,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        try {
 	          sessionStorage.setItem('cachefactory', 'cachefactory');
 	          sessionStorage.removeItem('cachefactory');
-	          $$storage = function () {
+	          $$storage = function $$storage() {
 	            return sessionStorage;
 	          };
 	        } catch (e) {
